@@ -1,0 +1,9 @@
+FROM php:7.0-alpine
+
+ENV SURF_VERSION 2.0.0-beta6
+
+RUN curl -L https://github.com/TYPO3/Surf/releases/download/$SURF_VERSION/surf.phar -o /usr/local/bin/surf \
+    && chmod a+x /usr/local/bin/surf
+
+ENTRYPOINT ["surf"]
+CMD ["--help"]
