@@ -1,15 +1,32 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
-# first arg is `-f` or `--some-option`
-if [ "${1#-}" != "$1" ]; then
-	set -- surf "$@"
-fi
+isCommand() {
+  for cmd in \
+    "deploy" \
+    "describe" \
+    "help" \
+    "list" \
+    "migrate" \
+    "show" \
+    "simulate"
+  do
+    if [ -z "${cmd#"$1"}" ]; then
+      return 0
+    fi
+  done
 
-# if our command is a valid surf subcommand, let's invoke it through surf instead
-# (this allows for "docker run t3easy/surf list", etc)
-if [ "$1" != "sh" ] && surf "$1" --help > /dev/null 2>&1 ]; then
-	set -- surf "$@"
+  return 1
+}
+
+# check if the first argument passed in looks like a flag
+if [ "$(printf %c "$1")" = '-' ]; then
+  set -- /sbin/tini -- surf "$@"
+# check if the first argument passed in is surf
+elif [ "$1" = 'surf' ]; then
+  set -- /sbin/tini -- "$@"
+# check if the first argument passed in matches a known command
+elif isCommand "$1"; then
+  set -- /sbin/tini -- surf "$@"
 fi
 
 exec "$@"

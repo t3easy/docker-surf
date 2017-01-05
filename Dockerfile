@@ -1,18 +1,14 @@
-FROM php:7.0-cli
+FROM composer:1.3
 
-RUN apt-get update && apt-get install -y \
-		git \
-		openssh-client \
-		rsync \
-	--no-install-recommends && rm -r /var/lib/apt/lists/*
+RUN apk --no-cache add rsync
 
-ENV SURF_VERSION 2.0.0-beta6
+ENV SURF_VERSION 2.0.0-beta7
 
-RUN curl -L https://github.com/TYPO3/Surf/releases/download/$SURF_VERSION/surf.phar -o /usr/local/bin/surf \
-    && chmod a+x /usr/local/bin/surf
+RUN composer global config minimum-stability beta \
+    && composer global require typo3/surf:${SURF_VERSION}
 
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD ["--help"]
+CMD ["surf"]
