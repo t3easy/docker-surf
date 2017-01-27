@@ -13,6 +13,9 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 RUN apk --no-cache add 'nodejs<7.0.0'
 
-RUN npm install gulp-cli -g && npm cache clean
+RUN npm install gulp-cli -g \
+    && touch ~/.dummy \
+    && npm cache clean \
+    && rm -f ~/.dummy
 
 CMD ["surf"]
