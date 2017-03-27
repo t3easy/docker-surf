@@ -1,4 +1,4 @@
-FROM composer:1.3
+FROM composer
 
 RUN apk --no-cache add rsync
 
