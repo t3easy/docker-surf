@@ -2,6 +2,9 @@ FROM composer
 
 RUN apk --no-cache add rsync
 
+ENV PATH "/tmp/vendor/bin:$PATH"
+ENV COMPOSER_HOME /tmp
+
 ENV SURF_VERSION 2.0.0-beta7
 
 RUN composer global config minimum-stability beta \
