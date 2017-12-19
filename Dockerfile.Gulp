@@ -15,7 +15,7 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-RUN apk --no-cache add 'nodejs<7.0.0' nodejs-npm
+RUN apk --no-cache add 'nodejs<7.0.0' nodejs-npm yarn
 
 RUN npm install gulp-cli -g \
     && touch ~/.dummy \
