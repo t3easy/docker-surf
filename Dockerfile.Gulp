@@ -22,4 +22,14 @@ RUN npm install gulp-cli -g \
     && npm cache clean \
     && rm -f ~/.dummy
 
+# https://github.com/esnme/ultrajson/issues/254#issuecomment-314862445
+COPY stack-fix.c /usr/local/src/
+
+RUN set -ex \
+    && apk add --no-cache  --virtual .build-deps build-base \
+    && gcc  -shared -fPIC /usr/local/src/stack-fix.c -o /lib/stack-fix.so \
+    && apk del .build-deps
+
+ENV LD_PRELOAD /lib/stack-fix.so
+
 CMD ["surf"]
