@@ -7,6 +7,8 @@ ENV COMPOSER_HOME /tmp
 
 ENV SURF_VERSION 2.0.0-beta7
 
+COPY ssh_config /etc/ssh/ssh_config
+
 RUN composer global config minimum-stability beta \
     && composer global require typo3/surf:${SURF_VERSION} \
     && composer clear-cache
