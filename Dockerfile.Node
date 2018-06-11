@@ -17,6 +17,10 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-RUN apk --no-cache add 'nodejs<7.0.0' nodejs-npm yarn
+RUN apk add --no-cache \
+            --repository http://dl-cdn.alpinelinux.org/alpine/v3.6/main \
+        'nodejs<7.0.0' \
+        'nodejs-npm<7.0.0' \
+        yarn
 
 CMD ["surf"]
