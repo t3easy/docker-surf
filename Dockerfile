@@ -1,4 +1,4 @@
-FROM composer
+FROM composer:1
 
 ENV SURF_VERSION dev-master
 
