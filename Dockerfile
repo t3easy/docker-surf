@@ -8,9 +8,9 @@ ENV COMPOSER_CACHE_DIR /tmp/cache/composer
 ENV YARN_CACHE_FOLDER /tmp/cache/yarn
 ENV npm_config_cache /tmp/cache/npm
 
-# Install TYPO3 Surf
-RUN mkdir /tmp/cache && chmod -R 777 /tmp/cache
+RUN mkdir -p -m 777 /tmp/cache
 
+# Install TYPO3 Surf
 RUN composer global require typo3/surf:${SURF_VERSION} && \
     composer clear-cache
 
