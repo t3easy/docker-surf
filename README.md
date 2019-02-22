@@ -2,7 +2,7 @@
 
 ### Description
 Small, alpine based image with TYPO3 Surf pre installed.  
-Based on the official composer 1.x image.
+Based on the my [composer 1.x image with PHP 7.2](https://hub.docker.com/r/t3easy/composer).
   
 ### Tags:  
 *  [`latest` TYPO3 Surf](https://github.com/t3easy/docker-surf/blob/master/Dockerfile)

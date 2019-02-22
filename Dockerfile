@@ -1,14 +1,11 @@
-FROM composer:1
+FROM t3easy/composer:1-php-7.2
 
 ENV SURF_VERSION dev-master
 
-ENV PATH "/tmp/vendor/bin:/root/.yarn/bin:/usr/local/share/.config/yarn/global/node_modules/.bin:$PATH"
-ENV COMPOSER_HOME /tmp
+ENV PATH "/root/.yarn/bin:/usr/local/share/.config/yarn/global/node_modules/.bin:$PATH"
 ENV COMPOSER_CACHE_DIR /tmp/cache/composer
 ENV YARN_CACHE_FOLDER /tmp/cache/yarn
 ENV npm_config_cache /tmp/cache/npm
-
-RUN mkdir -p -m 777 /tmp/cache
 
 # Install TYPO3 Surf
 RUN composer global require typo3/surf:${SURF_VERSION} && \
