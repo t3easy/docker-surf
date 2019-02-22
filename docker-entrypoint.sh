@@ -7,6 +7,7 @@ isCommand() {
     "help" \
     "list" \
     "migrate" \
+    "rollback" \
     "show" \
     "simulate"
   do
