@@ -2,7 +2,7 @@ FROM t3easy/composer:1-php-7.2
 
 ENV SURF_VERSION dev-master
 
-ENV PATH "/root/.yarn/bin:/usr/local/share/.config/yarn/global/node_modules/.bin:$PATH"
+ENV PATH "/usr/local/yarn/bin:/usr/local/share/.config/yarn/global/node_modules/.bin:$PATH"
 ENV COMPOSER_CACHE_DIR /tmp/cache/composer
 ENV YARN_CACHE_FOLDER /tmp/cache/yarn
 ENV npm_config_cache /tmp/cache/npm
@@ -19,6 +19,7 @@ RUN apk --no-cache add \
         rsync \
         && \
     curl -o- -L https://yarnpkg.com/install.sh | bash && \
+    mv /root/.yarn /usr/local/yarn && \
     apk del gnupg
 
 RUN yarn global add gulp-cli && yarn cache clean
