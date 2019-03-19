@@ -20,6 +20,8 @@ RUN apk --no-cache add \
         && \
     curl -o- -L https://yarnpkg.com/install.sh | bash && \
     mv /root/.yarn /usr/local/yarn && \
+    touch /.yarnrc && \
+    chmod 666 /.yarnrc && \
     apk del gnupg
 
 RUN yarn global add gulp-cli && yarn cache clean
