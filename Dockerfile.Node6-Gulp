@@ -18,13 +18,13 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 RUN apk add --no-cache \
             --repository http://dl-cdn.alpinelinux.org/alpine/v3.6/main \
-        'nodejs<7.0.0' \
-        'nodejs-npm<7.0.0' \
+        'nodejs~=6' \
+        npm \
         yarn
 
 RUN npm install gulp-cli -g \
     && touch ~/.dummy \
-    && npm cache clean \
+    && npm cache clean --force \
     && rm -f ~/.dummy
 
 CMD ["surf"]

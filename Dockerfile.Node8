@@ -17,7 +17,8 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 RUN apk add --no-cache \
-        'nodejs~=10' \
+            --repository http://dl-cdn.alpinelinux.org/alpine/v3.8/main \
+        'nodejs~=8' \
         npm \
         yarn
 
