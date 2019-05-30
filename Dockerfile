@@ -15,7 +15,7 @@ RUN composer global require typo3/surf:${SURF_VERSION} && \
 RUN apk --no-cache add \
         gnupg \
         nodejs \
-        nodejs-npm \
+        npm \
         rsync \
         && \
     curl -o- -L https://yarnpkg.com/install.sh | bash && \
