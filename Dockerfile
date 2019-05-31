@@ -14,7 +14,7 @@ RUN composer global require typo3/surf:${SURF_VERSION} && \
 # Install build tools
 RUN apk --no-cache add \
         gnupg \
-        nodejs \
+        'nodejs~=10' \
         npm \
         rsync \
         && \
