@@ -5,7 +5,7 @@ RUN apk --no-cache add rsync
 ENV PATH "/tmp/vendor/bin:$PATH"
 ENV COMPOSER_HOME /tmp
 
-ENV SURF_VERSION ^2@beta
+ENV SURF_VERSION ^2
 
 COPY ssh_config /etc/ssh/ssh_config
 
