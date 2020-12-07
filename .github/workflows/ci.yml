@@ -1,0 +1,82 @@
+name: ci
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        alpine: ["3.12"]
+        composer: ["2", "1"]
+        node: ["14", "12", "10"]
+        php: ["7.4", "7.3", "7.2"]
+        surf: ["2"]
+    env:
+      LATEST_ALPINE: "3.12"
+      LATEST_COMPOSER: "2"
+      LATEST_PHP: "7.4"
+      LATEST_NODE: "14"
+      LATEST_SURF: "2"
+      IMAGE_NAME: t3easy/surf
+      PLATFORMS: linux/amd64,linux/arm64
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.CR_PAT }}
+
+#    - name: Build and push latest image
+#      uses: docker/build-push-action@v2
+#      if: ${{ matrix.alpine == env.LATEST_ALPINE && matrix.composer == env.LATEST_COMPOSER && matrix.node == env.LATEST_NODE && matrix.php == env.LATEST_PHP && matrix.surf == env.LATEST_SURF }}
+#      with:
+#        push: true
+#        platforms: ${{ env.PLATFORMS }}
+#        build-args: |
+#          ALPINE_VERSION=${{ matrix.alpine }}
+#          COMPOSER_VERSION=${{ matrix.composer }}
+#          NODE_VERSION=${{ matrix.node }}
+#          PHP_VERSION=${{ matrix.php }}
+#          SURF_VERSION=${{ matrix.surf }}
+#        tags: |
+#          ${{ env.IMAGE_NAME }}
+#          ghcr.io/${{ env.IMAGE_NAME }}
+#        cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
+#        cache-from: type=local,src=/tmp/.buildx-cache
+
+    - name: Build and push images
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        build-args: |
+          ALPINE_VERSION=${{ matrix.alpine }}
+          COMPOSER_VERSION=${{ matrix.composer }}
+          NODE_VERSION=${{ matrix.node }}
+          PHP_VERSION=${{ matrix.php }}
+          SURF_VERSION=${{ matrix.surf }}
+        tags: |
+          ${{ env.IMAGE_NAME }}:${{ matrix.surf }}-php${{ matrix.php }}-composer${{ matrix.composer }}-node${{ matrix.node }}
+          ghcr.io/${{ env.IMAGE_NAME }}:${{ matrix.surf }}-php${{ matrix.php }}-composer${{ matrix.composer }}-node${{ matrix.node }}
+        cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
+        cache-from: type=local,src=/tmp/.buildx-cache
