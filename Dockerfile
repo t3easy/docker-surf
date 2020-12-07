@@ -10,6 +10,8 @@ RUN rm /usr/local/bin/docker-entrypoint.sh
 FROM t3easy/composer:${COMPOSER_VERSION}-php${PHP_VERSION}-alpine${ALPINE_VERSION}
 ARG SURF_VERSION
 
+LABEL org.opencontainers.image.source="https://github.com/t3easy/docker-surf"
+
 ENV SURF_VERSION=^${SURF_VERSION}
 
 ENV PATH "/usr/local/share/.config/yarn/global/node_modules/.bin:$PATH"
