@@ -20,14 +20,14 @@ ENV YARN_CACHE_FOLDER /tmp/cache/yarn
 ENV npm_config_cache /tmp/cache/npm
 
 RUN set -eux; \
-    apk --no-cache add \
-      libstdc++ \
-      rsync \
-    ; \
-    \
-    composer --version; \
-    composer global require typo3/surf:${SURF_VERSION}; \
-    rm -rf ${COMPOSER_CACHE_DIR}
+        apk --no-cache add \
+            libstdc++ \
+            rsync \
+        ; \
+        \
+        composer --version; \
+        composer global require typo3/surf:${SURF_VERSION}; \
+        rm -rf ${COMPOSER_CACHE_DIR}
 
 COPY --from=node /opt /opt
 COPY --from=node /usr/local/bin /usr/local/bin
@@ -36,16 +36,20 @@ COPY --from=node /usr/local/lib /usr/local/lib
 COPY --from=node /usr/local/share /usr/local/share
 
 RUN set -eux; \
-    surf --version; \
-    php --version; \
-    node --version; \
-    npm --version; \
-    yarn --version
+        touch /.yarnrc;
+        chmod 666 /.yarnrc
 
 RUN set -eux; \
-    yarn global add gulp-cli; \
-    rm -rf ${YARN_CACHE_FOLDER}; \
-    gulp --version
+        surf --version; \
+        php --version; \
+        node --version; \
+        npm --version; \
+        yarn --version
+
+RUN set -eux; \
+        yarn global add gulp-cli; \
+        rm -rf ${YARN_CACHE_FOLDER}; \
+        gulp --version
 
 # Configure ssh client
 COPY ssh_config /etc/ssh/ssh_config
