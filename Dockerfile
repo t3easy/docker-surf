@@ -36,7 +36,7 @@ COPY --from=node /usr/local/lib /usr/local/lib
 COPY --from=node /usr/local/share /usr/local/share
 
 RUN set -eux; \
-        touch /.yarnrc;
+        touch /.yarnrc; \
         chmod 666 /.yarnrc
 
 RUN set -eux; \
