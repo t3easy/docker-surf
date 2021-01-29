@@ -25,8 +25,9 @@ RUN set -eux; \
       rsync \
     ; \
     \
+    composer --version; \
     composer global require typo3/surf:${SURF_VERSION}; \
-    composer clear-cache
+    rm -rf ${COMPOSER_CACHE_DIR}
 
 COPY --from=node /opt /opt
 COPY --from=node /usr/local/bin /usr/local/bin
@@ -37,14 +38,13 @@ COPY --from=node /usr/local/share /usr/local/share
 RUN set -eux; \
     surf --version; \
     php --version; \
-    composer --version; \
     node --version; \
     npm --version; \
     yarn --version
 
 RUN set -eux; \
     yarn global add gulp-cli; \
-    yarn cache clean; \
+    rm -rf ${YARN_CACHE_FOLDER}; \
     gulp --version
 
 # Configure ssh client
