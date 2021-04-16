@@ -1,6 +1,8 @@
-name: ci
+name: Build and push Docker images
 
 on:
+  schedule:
+  - cron: "42 6 * * 1"
   push:
     branches: [main]
 
@@ -61,9 +63,12 @@ jobs:
         tags: |
           ${{ env.IMAGE_NAME }}
           ghcr.io/${{ env.IMAGE_NAME }}
+          ${{ env.IMAGE_NAME }}:${{ matrix.surf }}-php${{ matrix.php }}-composer${{ matrix.composer }}-node${{ matrix.node }}
+          ghcr.io/${{ env.IMAGE_NAME }}:${{ matrix.surf }}-php${{ matrix.php }}-composer${{ matrix.composer }}-node${{ matrix.node }}
 
     - name: Build and push images
       uses: docker/build-push-action@v2
+      if: ${{ matrix.alpine != env.LATEST_ALPINE && matrix.composer != env.LATEST_COMPOSER && matrix.node != env.LATEST_NODE && matrix.php != env.LATEST_PHP && matrix.surf != env.LATEST_SURF }}
       with:
         push: true
         platforms: ${{ env.PLATFORMS }}
