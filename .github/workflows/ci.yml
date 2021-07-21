@@ -8,7 +8,11 @@ on:
 
 jobs:
   build-and-push:
+    name: Build and push Docker image
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
     strategy:
       matrix:
         alpine: ["3.12"]
@@ -46,7 +50,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
-        password: ${{ secrets.CR_PAT }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push latest image
       uses: docker/build-push-action@v2
