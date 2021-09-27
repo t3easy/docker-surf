@@ -15,17 +15,15 @@ jobs:
       contents: read
     strategy:
       matrix:
-        alpine: ["3.12"]
+        alpine: ["3.14"]
         composer: ["2", "1"]
         node: ["14", "12", "10"]
         php: ["7.4", "7.3", "7.2"]
         surf: ["2"]
     env:
-      LATEST_ALPINE: "3.12"
       LATEST_COMPOSER: "2"
       LATEST_PHP: "7.4"
       LATEST_NODE: "14"
-      LATEST_SURF: "2"
       IMAGE_NAME: t3easy/surf
       PLATFORMS: linux/amd64,linux/arm64
 
@@ -51,7 +49,7 @@ jobs:
 
     - name: Build and push latest image
       uses: docker/build-push-action@v2
-      if: ${{ matrix.alpine == env.LATEST_ALPINE && matrix.composer == env.LATEST_COMPOSER && matrix.node == env.LATEST_NODE && matrix.php == env.LATEST_PHP && matrix.surf == env.LATEST_SURF }}
+      if: ${{ matrix.alpine == env.LATEST_ALPINE && matrix.composer == env.LATEST_COMPOSER && matrix.node == env.LATEST_NODE && matrix.php == env.LATEST_PHP }}
       with:
         push: true
         platforms: ${{ env.PLATFORMS }}
@@ -69,7 +67,7 @@ jobs:
 
     - name: Build and push images
       uses: docker/build-push-action@v2
-      if: ${{ matrix.alpine != env.LATEST_ALPINE && matrix.composer != env.LATEST_COMPOSER && matrix.node != env.LATEST_NODE && matrix.php != env.LATEST_PHP }}
+      if: ${{ matrix.composer != env.LATEST_COMPOSER && matrix.node != env.LATEST_NODE && matrix.php != env.LATEST_PHP }}
       with:
         push: true
         platforms: ${{ env.PLATFORMS }}
