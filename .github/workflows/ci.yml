@@ -98,7 +98,7 @@ jobs:
 
     - name: Build and push images
       uses: docker/build-push-action@v2
-      if: ${{ matrix.composer != env.LATEST_COMPOSER && matrix.node != env.LATEST_NODE && matrix.php != env.LATEST_PHP }}
+      if: ${{ matrix.composer != env.LATEST_COMPOSER || matrix.node != env.LATEST_NODE || matrix.php != env.LATEST_PHP }}
       with:
         push: true
         platforms: ${{ env.PLATFORMS }}
