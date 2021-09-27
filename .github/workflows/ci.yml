@@ -25,26 +25,32 @@ jobs:
           php: "7.2"
           composer: "2"
           node: "14"
+          surf: "2"
         - alpine: "3.12"
           php: "7.2"
           composer: "2"
           node: "12"
+          surf: "2"
         - alpine: "3.12"
           php: "7.2"
           composer: "2"
           node: "10"
+          surf: "2"
         - alpine: "3.12"
           php: "7.2"
           composer: "1"
           node: "14"
+          surf: "2"
         - alpine: "3.12"
           php: "7.2"
           composer: "1"
           node: "12"
+          surf: "2"
         - alpine: "3.12"
           php: "7.2"
           composer: "1"
           node: "10"
+          surf: "2"
     env:
       LATEST_COMPOSER: "2"
       LATEST_PHP: "7.4"
@@ -74,7 +80,7 @@ jobs:
 
     - name: Build and push latest image
       uses: docker/build-push-action@v2
-      if: ${{ matrix.alpine == env.LATEST_ALPINE && matrix.composer == env.LATEST_COMPOSER && matrix.node == env.LATEST_NODE && matrix.php == env.LATEST_PHP }}
+      if: ${{ matrix.composer == env.LATEST_COMPOSER && matrix.node == env.LATEST_NODE && matrix.php == env.LATEST_PHP }}
       with:
         push: true
         platforms: ${{ env.PLATFORMS }}
