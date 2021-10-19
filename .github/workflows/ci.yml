@@ -17,7 +17,7 @@ jobs:
       matrix:
         alpine: ["3.14"]
         composer: ["2", "1"]
-        node: ["14", "12", "10"]
+        node: ["16", "14", "12", "10"]
         php: ["7.4", "7.3"]
         surf: ["2"]
         include:
