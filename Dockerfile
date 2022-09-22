@@ -8,7 +8,7 @@ ARG SURF_VERSION=2
 FROM node:${NODE_VERSION}-alpine as node
 RUN rm /usr/local/bin/docker-entrypoint.sh
 
-FROM t3easy/composer:${COMPOSER_VERSION}-php${PHP_VERSION}-alpine${ALPINE_VERSION}
+FROM ghcr.io/t3easy/composer:${COMPOSER_VERSION}-php${PHP_VERSION}-alpine${ALPINE_VERSION}
 ARG SURF_VERSION
 
 LABEL org.opencontainers.image.source="https://github.com/t3easy/docker-surf"
