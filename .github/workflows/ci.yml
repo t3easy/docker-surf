@@ -18,6 +18,7 @@ jobs:
       packages: write
       contents: read
     strategy:
+      fail-fast: false
       matrix:
         alpine: ["3.14"]
         composer: ["2", "1"]
