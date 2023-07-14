@@ -1,0 +1,84 @@
+# syntax=docker/dockerfile:1
+ARG DEBIAN_VERSION=bookworm
+ARG COMPOSER_VERSION=2
+ARG PHP_VERSION=8.2
+ARG SURF_VERSION=3
+
+FROM php:${PHP_VERSION}-${DEBIAN_VERSION}
+
+LABEL org.opencontainers.image.source="https://github.com/t3easy/docker-surf"
+
+ARG SURF_VERSION
+
+RUN set -eux; \
+        apt-get update; \
+        apt-get install -y --no-install-recommends \
+                bash \
+                coreutils \
+                git \
+                make \
+                mercurial \
+                openssh-client \
+                patch \
+                subversion \
+                tini \
+                unzip \
+                zip \
+        ; \
+        rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+        apt-get update; \
+        apt-get install -y --no-install-recommends \
+                zlib1g-dev \
+                libzip-dev \
+        ; \
+        rm -rf /var/lib/apt/lists/*; \
+        \
+        case $PHP_VERSION in \
+                7.2.*) \
+                        docker-php-ext-configure zip --with-libzip;; \
+        esac; \
+        \
+        docker-php-ext-install -j "$(nproc)" \
+                zip
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HOME /tmp
+
+ENV PATH "/app/vendor/bin:/tmp/vendor/bin:$PATH"
+
+COPY --from=composer $PHP_INI_DIR/php-cli.ini $PHP_INI_DIR/php-cli.ini
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+RUN set -eux; \
+  composer --ansi --version --no-interaction; \
+  find /tmp -type d -exec chmod -v 1777 {} +
+
+ENV SURF_VERSION=^${SURF_VERSION}
+
+
+ENV COMPOSER_CACHE_DIR /tmp/cache/composer
+
+RUN set -eux; \
+        apt-get update; \
+        apt-get install -y --no-install-recommends \
+            rsync \
+        ; \
+        rm -rf /var/lib/apt/lists/*; \
+        \
+        composer global require typo3/surf:${SURF_VERSION}; \
+        rm -rf ${COMPOSER_CACHE_DIR}
+
+RUN set -eux; \
+        surf --version; \
+        php --version;
+
+# Configure ssh client
+COPY ssh_config /etc/ssh/ssh_config
+
+WORKDIR /app
+
+ENTRYPOINT []
+
+CMD ["surf"]
