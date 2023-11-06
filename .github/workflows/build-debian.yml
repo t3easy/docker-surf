@@ -37,6 +37,14 @@ jobs:
           debian: "bullseye"
           php: "7.4"
           surf: "2"
+        - composer: "2"
+          debian: "buster"
+          php: "7.4"
+          surf: "3"
+        - composer: "2"
+          debian: "bullseye"
+          php: "7.4"
+          surf: "3"
 
     env:
       IMAGE_NAME: t3easy/surf
